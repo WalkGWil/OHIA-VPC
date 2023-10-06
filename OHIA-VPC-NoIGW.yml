@@ -394,6 +394,17 @@ Resources:
         - !Ref StorageRouteTable
       VpcId: !Ref VPC
 
+  DynamoDBEndpoint:
+    Type: 'AWS::EC2::VPCEndpoint'
+    Properties:
+      VpcEndpointType: 'Gateway'
+      ServiceName: !Sub 'com.amazonaws.${AWS::Region}.dynamodb'
+      RouteTableIds:
+        - !Ref HeadNodeRouteTable
+        - !Ref ComputeNodeRouteTable
+        - !Ref StorageRouteTable
+      VpcId: !Ref VPC
+
   SSMEndpoint:
     Type: AWS::EC2::VPCEndpoint
     Properties:
@@ -464,6 +475,19 @@ Resources:
     Properties:
       PrivateDnsEnabled: true
       ServiceName: !Sub "com.amazonaws.${AWS::Region}.kms"
+      SubnetIds:  
+        - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+      VpcEndpointType: 'Interface'
+      VpcId: !Ref VPC
+
+  CloudFormationEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.cloudformation"
       SubnetIds:  
         - !Ref HeadNodeSubnetA
         - !Ref HeadNodeSubnetB
