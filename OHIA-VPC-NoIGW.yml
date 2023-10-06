@@ -1,0 +1,550 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create public and private subnets in four AZs.
+
+Metadata: 
+  AWS::CloudFormation::Interface: 
+    ParameterGroups: 
+      - 
+        Label: 
+          default: "Network Configuration"
+        Parameters: 
+          - VPC
+          - VirtualGateway
+      - 
+        Label: 
+          default: "CIDR ranges"
+        Parameters: 
+          - CidrHeadNodeSubnetA
+          - CidrHeadNodeSubnetB
+          - CidrHeadNodeSubnetC
+          - CidrHeadNodeSubnetD
+          - CidrComputeNodeSubnetA
+          - CidrComputeNodeSubnetB
+          - CidrComputeNodeSubnetC
+          - CidrComputeNodeSubnetD
+          - CidrStorageSubnetA
+          - CidrStorageSubnetB
+          - CidrStorageSubnetC
+          - CidrStorageSubnetD
+
+Parameters:
+  VPC:
+    Description: Existing VPC Virtual Gateway ID
+    Type: AWS::EC2::VPC::Id
+  VirtualGateway:
+    AllowedPattern: 'vgw-[A-Fa-f0-9]{17}'
+    Description: Existing VPC Virtual Gateway ID IE- vgw-0a8690e8fad111f91
+    Type: String
+  CidrHeadNodeSubnetA:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.230.0/24
+    Description: VPC CIDR Block for the Public Subnet A
+    Type: String
+  CidrHeadNodeSubnetB:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.238.0/24
+    Description: VPC CIDR Block for the Public Subnet B
+    Type: String
+  CidrHeadNodeSubnetC:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.246.0/24
+    Description: VPC CIDR Block for the Public Subnet C
+    Type: String
+  CidrHeadNodeSubnetD:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.254.0/24
+    Description: VPC CIDR Block for the Public Subnet D
+    Type: String
+  CidrComputeNodeSubnetA:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.224.0/24
+    Description: VPC CIDR Block for the Private Subnet A
+    Type: String
+  CidrComputeNodeSubnetB:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.232.0/24
+    Description: VPC CIDR Block for the Private Subnet B
+    Type: String
+  CidrComputeNodeSubnetC:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.240.0/24
+    Description: VPC CIDR Block for the Private Subnet C
+    Type: String
+  CidrComputeNodeSubnetD:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.248.0/24
+    Description: VPC CIDR Block for the Private Subnet D
+    Type: String
+  CidrStorageSubnetA:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.228.0/23
+    Description: VPC CIDR Block for the Private Subnet A2
+    Type: String
+  CidrStorageSubnetB:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.236.0/23
+    Description: VPC CIDR Block for the Private Subnet B2
+    Type: String
+  CidrStorageSubnetC:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.244.0/23
+    Description: VPC CIDR Block for the Private Subnet C2
+    Type: String
+  CidrStorageSubnetD:
+    AllowedPattern: '((\d{1,3})\.){3}\d{1,3}/\d{1,2}'
+    Default: 10.28.252.0/23
+    Description: VPC CIDR Block for the Private Subnet D2
+    Type: String
+
+Resources:
+
+  HeadNodeSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !Ref CidrHeadNodeSubnetA
+      AvailabilityZoneId: usw2-az1
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:HeadNodeSubnetA-usw2-az1'
+          - StackName: !Ref AWS::StackName
+
+  HeadNodeSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !Ref CidrHeadNodeSubnetB
+      AvailabilityZoneId: usw2-az2
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:HeadNodeSubnetB-usw2-az2'
+          - StackName: !Ref AWS::StackName
+
+  HeadNodeSubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !Ref CidrHeadNodeSubnetC
+      AvailabilityZoneId: usw2-az3
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:HeadNodeSubnetC-usw2-az3'
+          - StackName: !Ref AWS::StackName
+
+  HeadNodeSubnetD:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: !Ref CidrHeadNodeSubnetD
+      AvailabilityZoneId: usw2-az4
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:HeadNodeSubnetD-usw2-az4'
+          - StackName: !Ref AWS::StackName
+
+  AttachVGW:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties: 
+      VpcId: !Ref VPC
+      VpnGatewayId: !Ref VirtualGateway
+
+  HeadNodeRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub '${AWS::StackName}:HeadNodeRoute'
+  
+  HeadNodeRoute1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref HeadNodeRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref VirtualGateway
+    DependsOn:
+      - AttachVGW
+
+  ComputeNodeRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}:ComputeNodeRouteTable'
+
+  DefaultComputeRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref ComputeNodeRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref VirtualGateway
+    DependsOn:
+      - AttachVGW
+
+  StorageRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}:StorageRouteTable'
+
+  DefaultStorageRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref StorageRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref VirtualGateway
+    DependsOn:
+      - AttachVGW
+  
+  HeadNodeSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref HeadNodeSubnetA
+      RouteTableId: !Ref HeadNodeRouteTable
+
+  HeadNodeSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref HeadNodeSubnetB
+      RouteTableId: !Ref HeadNodeRouteTable
+
+  HeadNodeSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref HeadNodeSubnetC
+      RouteTableId: !Ref HeadNodeRouteTable
+
+  HeadNodeSubnetDRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref HeadNodeSubnetD
+      RouteTableId: !Ref HeadNodeRouteTable
+
+  ComputeNodeSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZoneId: usw2-az1
+      CidrBlock: !Ref CidrComputeNodeSubnetA
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:ComputeNodeSubnetA-usw2-az1'
+          - StackName: !Ref AWS::StackName
+  
+  ComputeNodeSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZoneId: usw2-az2
+      CidrBlock: !Ref CidrComputeNodeSubnetB
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:ComputeNodeSubnetB-usw2-az2'
+          - StackName: !Ref AWS::StackName
+
+  ComputeNodeSubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZoneId: usw2-az3
+      CidrBlock: !Ref CidrComputeNodeSubnetC
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:ComputeNodeSubnetC-usw2-az3'
+          - StackName: !Ref AWS::StackName
+
+  ComputeNodeSubnetD:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZoneId: usw2-az4
+      CidrBlock: !Ref CidrComputeNodeSubnetD
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:ComputeNodeSubnetD-usw2-az4'
+          - StackName: !Ref AWS::StackName
+
+  StorageSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZoneId: usw2-az1
+      CidrBlock: !Ref CidrStorageSubnetA
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:StorageSubnetA-usw2-az1'
+          - StackName: !Ref AWS::StackName
+  
+  StorageSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZoneId: usw2-az2
+      CidrBlock: !Ref CidrStorageSubnetB
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:StorageSubnetB-usw2-az2'
+          - StackName: !Ref AWS::StackName
+
+  StorageSubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZoneId: usw2-az3
+      CidrBlock: !Ref CidrStorageSubnetC
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:StorageSubnetC-usw2-az3'
+          - StackName: !Ref AWS::StackName
+
+  StorageSubnetD:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZoneId: usw2-az4
+      CidrBlock: !Ref CidrStorageSubnetD
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: !Sub
+          - '${StackName}:StorageSubnetD-usw2-az4'
+          - StackName: !Ref AWS::StackName
+
+  ComputeNodeSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref ComputeNodeRouteTable
+      SubnetId: !Ref ComputeNodeSubnetA
+      
+  ComputeNodeSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref ComputeNodeRouteTable
+      SubnetId: !Ref ComputeNodeSubnetB
+
+  ComputeNodeSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref ComputeNodeRouteTable
+      SubnetId: !Ref ComputeNodeSubnetC
+
+  ComputeNodeSubnetDRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref ComputeNodeRouteTable
+      SubnetId: !Ref ComputeNodeSubnetD
+
+  StorageSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref StorageRouteTable
+      SubnetId: !Ref StorageSubnetA
+      
+  StorageSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref StorageRouteTable
+      SubnetId: !Ref StorageSubnetB
+
+  StorageSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref StorageRouteTable
+      SubnetId: !Ref StorageSubnetC
+
+  StorageSubnetDRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref StorageRouteTable
+      SubnetId: !Ref StorageSubnetD
+
+  S3Endpoint:
+    Type: 'AWS::EC2::VPCEndpoint'
+    Properties:
+      VpcEndpointType: 'Gateway'
+      ServiceName: !Sub 'com.amazonaws.${AWS::Region}.s3'
+      RouteTableIds:
+        - !Ref HeadNodeRouteTable
+        - !Ref ComputeNodeRouteTable
+        - !Ref StorageRouteTable
+      VpcId: !Ref VPC
+
+  SSMEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ssm"
+      SubnetIds: 
+        - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+      VpcEndpointType: 'Interface'
+      VpcId: !Ref VPC
+  
+  SSMMessagesEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ssmmessages"
+      SubnetIds: 
+        - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+      VpcEndpointType: 'Interface'
+      VpcId: !Ref VPC
+
+  EC2MessagesEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ec2messages"
+      SubnetIds:  
+        - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+      VpcEndpointType: 'Interface'
+      VpcId: !Ref VPC
+
+  CloudWatchEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.monitoring"
+      SubnetIds:  
+        - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+      VpcEndpointType: 'Interface'
+      VpcId: !Ref VPC
+
+  CloudWatchLogsEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.logs"
+      SubnetIds:  
+        - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+      VpcEndpointType: 'Interface'
+      VpcId: !Ref VPC
+
+  KMSEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.kms"
+      SubnetIds:  
+        - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+      VpcEndpointType: 'Interface'
+      VpcId: !Ref VPC
+
+Outputs:
+  VPC:
+    Value: !Ref VPC
+    Description: ID of the VPC
+    Export:
+      Name: !Sub ${AWS::StackName}-VPC
+  PublicSubnets:
+    Value: !Join
+      - ','
+      - - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+    Description: ID of the public subnets
+    Export:
+      Name: !Sub ${AWS::StackName}-PublicSubnets
+  PrivateSubnets:
+    Value: !Join
+      - ','
+      - - !Ref ComputeNodeSubnetA
+        - !Ref ComputeNodeSubnetB
+        - !Ref ComputeNodeSubnetC
+        - !Ref ComputeNodeSubnetD
+        - !Ref StorageSubnetA
+        - !Ref StorageSubnetB
+        - !Ref StorageSubnetC
+        - !Ref StorageSubnetD
+    Description: ID of the private subnets
+    Export:
+      Name: !Sub ${AWS::StackName}-PrivateSubnets
+  HeadNodeSubnets:
+    Value: !Join
+      - ','
+      - - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+    Description: ID of the head node subnets
+    Export:
+      Name: !Sub ${AWS::StackName}-HeadNodeSubnets
+  ComputeNodeSubnets:
+    Value: !Join
+      - ','
+      - - !Ref ComputeNodeSubnetA
+        - !Ref ComputeNodeSubnetB
+        - !Ref ComputeNodeSubnetC
+        - !Ref ComputeNodeSubnetD
+    Description: ID of the private subnets
+    Export:
+      Name: !Sub ${AWS::StackName}-ComputeNodeSubnets
+  StorageSubnets:
+    Value: !Join
+      - ','
+      - - !Ref StorageSubnetA
+        - !Ref StorageSubnetB
+        - !Ref StorageSubnetC
+        - !Ref StorageSubnetD
+    Description: ID of the private subnets
+    Export:
+      Name: !Sub ${AWS::StackName}-StorageSubnets
+  DefaultPrivateSubnet:
+    Description: The ID of a default private subnet
+    Value: !Ref ComputeNodeSubnetA
+    Export:
+      Name: !Sub "${AWS::StackName}-DefaultPrivateSubnet"
+  DefaultPublicSubnet:
+    Description: The ID of a default public subnet
+    Value: !Ref HeadNodeSubnetA
+    Export:
+      Name: !Sub "${AWS::StackName}-DefaultPublicSubnet"
+  InternetGatewayId:
+    Description: The ID of the Virtual Gateway
+    Value: !Ref VirtualGateway
+    Export:
+      Name: !Sub "${AWS::StackName}-InternetGateway"
+      
