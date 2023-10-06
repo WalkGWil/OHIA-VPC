@@ -444,6 +444,19 @@ Resources:
       VpcEndpointType: 'Interface'
       VpcId: !Ref VPC
 
+  EC2Endpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ec2"
+      SubnetIds:  
+        - !Ref HeadNodeSubnetA
+        - !Ref HeadNodeSubnetB
+        - !Ref HeadNodeSubnetC
+        - !Ref HeadNodeSubnetD
+      VpcEndpointType: 'Interface'
+      VpcId: !Ref VPC
+
   CloudWatchEndpoint:
     Type: AWS::EC2::VPCEndpoint
     Properties:
