@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create public and private subnets in four AZs.
+Description: Create a fully private VPC across all four AZs in US-west-2 region. For UCLAH OHIA HPC POC. Default routing through virtual gateway back to on-premise network security. 
 
 Metadata: 
   AWS::CloudFormation::Interface: 
